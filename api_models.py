@@ -40,6 +40,15 @@ create_sub_category_model = api.model("SubCategory", {
 
 })
 
+user_model = api.model("User", {
+    "username": fields.String(required=True, description="Username of the user"),
+    "password": fields.String(required=True, description="Password of the user"),
+})
+
+admin_model = api.inherit("AdminUser", user_model, {
+    "admin": fields.Boolean(description="Admin access status", default=False)
+})
+
 
 
 
