@@ -78,7 +78,7 @@ class SubCategoryDAO(BaseDAO):
     def __init__(self):
         super().__init__(SubCategory)
 
+
 class UserDAO(BaseDAO):
     def __init__(self):
         super().__init__(User)
-
