@@ -17,7 +17,7 @@ loc = Namespace("api/v1/location", description='API version v1 for location')
 dept = Namespace("api/v1/department", description='API version v1 for department')
 category = Namespace("api/v1/category", description='API version v1 for category')
 sub_category = Namespace("api/v1/sub_category", description='API version v1 for sub_category')
-user_ns = Namespace("api/v1/user", description='API version v1 for user signup, login')
+ns = Namespace("api/v1", description='API version v1 for user signup, login')
 
 location_dao = LocationDAO()
 department_dao = DepartmentDAO()
@@ -26,20 +26,20 @@ sub_category_dao = SubCategoryDAO()
 user_dao = UserDAO()
 
 
-@user_ns.route('/signup')
+@ns.route('/signup')
 class Signup(Resource):
-    @user_ns.expect(admin_model)
+    @ns.expect(admin_model)
     def post(self):
-        data = user_ns.payload
+        data = ns.payload
         hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
         data['password'] = hashed_password
         user_dao.create(data)
         return make_response(jsonify({'message': 'User created successfully'}), 201)
 
 
-@user_ns.route('/login', methods=['POST'])
+@ns.route('/login', methods=['POST'])
 class Login(Resource):
-    @user_ns.expect(user_model)
+    @ns.expect(user_model)
     def post(self):
         auth = request.authorization
         if not auth or not auth.username or not auth.password:
