@@ -18,7 +18,6 @@ dept = Namespace("api/v1/department", description='API version v1 for department
 category = Namespace("api/v1/category", description='API version v1 for category')
 sub_category = Namespace("api/v1/sub_category", description='API version v1 for sub_category')
 user_ns = Namespace("api/v1/user", description='API version v1 for user signup, login')
-ns = Namespace("api/v1", description='API version v1')
 
 location_dao = LocationDAO()
 department_dao = DepartmentDAO()
@@ -299,18 +298,18 @@ class SubCategoryAPI(Resource):
             return make_response(jsonify({'message': str(e)}), 500)
 
 
-@ns.route('/locations/<int:location_id>/department')
+@loc.route('/<int:location_id>/department')
 class DepartmentAPI(Resource):
     @login_required
-    @ns.marshal_list_with(department_model)
+    @loc.marshal_list_with(department_model)
     def get(self, location_id):
         return Department.query.filter_by(location_id=location_id).all(), 200
 
 
-@ns.route('/locations/<int:location_id>/department/<int:department_id>/category')
+@loc.route('/<int:location_id>/department/<int:department_id>/category')
 class CategoryAPI(Resource):
     @login_required
-    @ns.marshal_list_with(category_model)
+    @loc.marshal_list_with(category_model)
     def get(self, location_id, department_id):
         return Category.query.join(Department).join(Location).filter(
             Category.department_id == department_id,
