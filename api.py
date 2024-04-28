@@ -31,7 +31,7 @@ user_dao = UserDAO()
 class Signup(Resource):
     @user_ns.expect(admin_model)
     def post(self):
-        data = request.get_json()
+        data = user_ns.payload
         hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
         data['password'] = hashed_password
         user_dao.create(data)
@@ -43,7 +43,6 @@ class Login(Resource):
     @user_ns.expect(user_model)
     def post(self):
         auth = request.authorization
-
         if not auth or not auth.username or not auth.password:
             return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
@@ -53,8 +52,9 @@ class Login(Resource):
             return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
         if check_password_hash(user.password, auth.password):
-            token = jwt.encode({'id': user.id, 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=30)},
-                               os.environ.get('SECRET_KEY'))
+            token = jwt.encode(
+                {'id': user.id, 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=30)},
+                os.environ.get('SECRET_KEY'))
             return jsonify({'token': token})
 
         return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
@@ -146,7 +146,7 @@ class LocationAPI(Resource):
     def delete(self, location_id):
         try:
             msg = location_dao.delete(location_id)
-            return make_response(jsonify({'message': msg}), 204)
+            return make_response(jsonify({'message': msg}), 200)
 
         except Exception as e:
             return make_response(jsonify({'message': str(e)}), 500)
@@ -195,7 +195,7 @@ class DepartmentAPI(Resource):
     def delete(self, department_id):
         try:
             msg = department_dao.delete(department_id)
-            return make_response(jsonify({'message': msg}), 204)
+            return make_response(jsonify({'message': msg}), 200)
 
         except Exception as e:
             return make_response(jsonify({'message': str(e)}), 500)
@@ -244,7 +244,7 @@ class CategoryAPI(Resource):
     def delete(self, category_id):
         try:
             msg = category_dao.delete(category_id)
-            return make_response(jsonify({'message': msg}), 204)
+            return make_response(jsonify({'message': msg}), 200)
 
         except Exception as e:
             return jsonify({'message': str(e)}), 500
@@ -293,7 +293,7 @@ class SubCategoryAPI(Resource):
     def delete(self, sub_category_id):
         try:
             msg = sub_category_dao.delete(sub_category_id)
-            return make_response(jsonify({'message': msg}), 204)
+            return make_response(jsonify({'message': msg}), 200)
 
         except Exception as e:
             return make_response(jsonify({'message': str(e)}), 500)
