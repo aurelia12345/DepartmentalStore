@@ -1,1 +1,2 @@
 FLASK_DEBUG=True
+SECRET_KEY="DepartmentalStore@12345"

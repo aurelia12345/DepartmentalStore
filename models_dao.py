@@ -1,4 +1,4 @@
-from resource_models import Location, Department, Category, SubCategory
+from resource_models import Location, Department, Category, SubCategory, User
 from extensions import db
 
 
@@ -77,3 +77,8 @@ class CategoryDAO(BaseDAO):
 class SubCategoryDAO(BaseDAO):
     def __init__(self):
         super().__init__(SubCategory)
+
+class UserDAO(BaseDAO):
+    def __init__(self):
+        super().__init__(User)
+
