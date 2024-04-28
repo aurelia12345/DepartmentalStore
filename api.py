@@ -37,7 +37,7 @@ class Signup(Resource):
         return make_response(jsonify({'message': 'User created successfully'}), 201)
 
 
-@ns.route('/login', methods=['POST'])
+@ns.route('/login')
 class Login(Resource):
     @ns.expect(user_model)
     def post(self):
