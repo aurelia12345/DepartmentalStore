@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from api import loc, dept, category, sub_category, user_ns
+from api import loc, dept, category, sub_category, ns
 from extensions import api, db
 
 
@@ -18,7 +18,7 @@ def create_app():
     api.add_namespace(dept)
     api.add_namespace(category)
     api.add_namespace(sub_category)
-    api.add_namespace(user_ns)
+    api.add_namespace(ns)
 
     return app
 
